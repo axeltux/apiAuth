@@ -28,8 +28,10 @@ class AuthController extends Controller
         ]);
 
         $user->save();
+        //Se crea el avatar del usuario
         $avatar = Avatar::create($user->name)->getImageObject()->encode('png');
         Storage::put('avatars/'.$user->id.'/avatar.png', (string) $avatar);
+        //Se envia correo para la activación de la cuenta
         $user->notify(new SignupActivate($user));
         return response()->json(['message' => 'Usuario creado existosamente!'], 201);
     }
